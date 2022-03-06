@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Platformer Game Indev</title>
+    <link rel="icon" href="assets/icon.png">
+    <link href="style.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+    <canvas>
+        <div style="position: absolute; z-index: 1000; display: flex; width: 100vw; height: 100vh; flex-direction: column; background: #441111; color: #ffffff; font-size: 3rem; justify-content: center; align-items: center">
+            <h1>JavaScript is disabled!</h1><br>
+            <p>Please enable JavaScript in site settings to play!</p>
+        </div>
+    </canvas>
+    <div id="overlay">
+        <div class="center-align">
+            <div class="container outset" id="editor-menu-items">
+                <div class="inset">
+                    <div class="menu-icon" id="spawn">
+                        <img src="assets/menu/spawn.png" draggable="false">
+                    </div>
+                    <div class="menu-icon" id="eraser">
+                        <img src="assets/menu/eraser.png" draggable="false">
+                    </div>
+                </div>
+                <div class="inset">
+                    <div class="menu-icon" id="save">
+                        <img src="assets/menu/save.png" draggable="false">
+                    </div>
+                    <div class="menu-icon" id="import">
+                        <img src="assets/menu/import.png" draggable="false">
+                    </div>
+                </div>
+                <div class="inset">
+                    <div class="menu-icon" id="start">
+                        <img src="assets/menu/start.png" draggable="false">
+                    </div>
+                    <div class="menu-icon" id="settings">
+                        <img src="assets/menu/settings.png" draggable="false">
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="container outset" id="editor-selected-block">
+            <div class="menu-icon static">
+                <img src="assets/null.png" draggable="false">
+            </div>
+        </div>
+        <div class="container outset" id="editor-selection-tools">
+            <div class="menu-icon" id="brush">
+                <img src="assets/brushCursor.png" draggable="false">
+            </div>
+            <div class="menu-icon" id="select">
+                <img src="assets/basicCursor.png" draggable="false">
+            </div>
+        </div>
+        <div class="container outset hidden" id="editor-playtesting-menu">
+            <div class="menu-icon" id="stop">
+                <img src="assets/menu/stop.png" draggable="false">
+            </div>
+        </div>
+        <div class="container outset" id="selection-hint" hidden></div>
+        <div class="container outset" id="editor-bar-bottom">
+            <div class="inset" id="editor-block-groups">
+            </div>
+            <div class="inset" id="editor-blocks">
+            </div>
+        </div>
+        <div class="center-center-align">
+            <div class="popup outset hidden" id="save-popup">
+                <div class="menu-icon outset close-popup">
+                    <img src="assets/menu/exit.png" draggable="false">
+                </div>
+                <h1>Publish Level</h1>
+                <form>
+                    <input type="text" class="level-name inset" placeholder="Name" autocomplete="off" spellcheck="false">
+                    <textarea class="level-desc inset" placeholder="Description" spellcheck="false"></textarea>
+                </form>
+                <div class="popup-options">
+                    <input type="button" value="Publish">
+                    <input type="button" value="Save locally">
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+
+<script src="main.js"></script>
+</html>
