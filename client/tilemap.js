@@ -253,16 +253,13 @@ class Tilemap {
     }
 
     load(encoded) {
-        let blockArr = [];
-        LZUTF8.decompressFromBase64(encoded).split(".").forEach((el, i) => {
-            blockArr.push(Number(el));
-        });
+        let blockArr = TextConverter.asciiToUint8(LZUTF8.decompress(encoded));
 
-        const blocks = [];
-        for(let i in blockArr) {
+        const blocks = new Array(this.width * this.height);
+        for(let i = 0; i < this.width * this.height; i++) {
             const id = Math.floor(blockArr[i] / 4) - 1;
             const rotation = blockArr[i] % 4;
-            blocks.push([id, rotation, false, false]);
+            blocks[i] = new Int8Array([id, rotation, 0, 0]);
         }
         console.log(blocks);
 

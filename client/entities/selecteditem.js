@@ -9,6 +9,8 @@ class SelectedItem extends Entity {
         this.height = 1;
         this.useGravity = false;
         this.static = true;
+        
+        this.tickInEditor = true;
     }
 
     update(tilemaps) {

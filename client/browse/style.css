@@ -1,0 +1,260 @@
+@import url("/globals.css");
+
+@font-face {
+    font-family: "monogram";
+    src: url("/assets/monogram-extended.ttf") format('truetype');
+}
+
+@keyframes pan {
+    0% {
+        background-position: right -32px bottom -32px;
+    }
+    100% {
+        background-position: right 32px bottom 32px;
+    }
+}
+
+.hidden, .hidden * {
+    visibility: hidden;
+    display: none;
+    width: 0px;
+}
+
+@keyframes new {
+    0% {
+        transform: scale(1) rotate(0deg);
+        filter: brightness(1);
+    }
+    10% {
+        transform: scale(1.05) rotate(0deg);
+        filter: brightness(1.2);
+    }
+    14% {
+        transform: scale(1.05) rotate(5deg);
+        filter: brightness(1.5);
+    }
+    18% {
+        transform: scale(1.05) rotate(-5deg);
+        filter: brightness(1.5);
+    }
+    22% {
+        transform: scale(1.05) rotate(5deg);
+        filter: brightness(1.5);
+    }
+    26% {
+        transform: scale(1.05) rotate(-5deg);
+        filter: brightness(1.5);
+    }
+    30% {
+        transform: scale(1.05) rotate(0deg);
+        filter: brightness(1.2);
+    }
+    40% {
+        transform: scale(1) rotate(0deg);
+        filter: brightness(1);
+    }
+    100% {
+        transform: none;
+        filter: none;
+    }
+}
+
+::-webkit-scrollbar {
+  width: 16px;
+}
+
+html {
+    background: url("/assets/background.png");
+    animation: pan 0.75s linear;
+    animation-iteration-count: infinite;
+    background-size: 64px 64px;
+    image-rendering: pixelated;
+    width: 100vw;
+    height: 100vh;
+    
+    padding: 24px;
+    box-sizing: border-box;
+    cursor: url('/assets/basicCursor.png'), auto;
+}
+
+body {
+    width: 100%;
+    height: 100%;
+
+    display: flex;
+    flex-direction: row;
+    font: 40px "monogram", arial, sans-serif;
+    color: #fff;
+}
+#level-list {
+    min-width: min(30vw, 512px);
+    max-width: min(30vw, 512px);
+    margin: 4px;
+    padding: 4px;
+    box-sizing: border-box;
+    list-style: none;
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+#level-list > li {
+    width: 100%;
+    height: max(64px, fit-content);
+    
+    padding-bottom: 4px;
+}
+a {
+    color: inherit;
+    text-decoration: none;
+}
+.level-entry {
+    height: 100%;
+    padding: 4px;
+    box-sizing: border-box;
+    padding-bottom: 0.5rem;
+    user-select: none;
+    display: flex;
+    flex-direction: row;
+}
+.level-entry.new {
+    animation: 3s linear 1s infinite new;
+}
+.level-entry.unplayed > .text > .title::after {
+    content: "*";
+    color: #888;
+}
+.level-entry:hover {
+    filter: brightness(0.9);
+}
+
+.level-entry > .difficulty {
+    width: 48px;
+    height: 48px;
+    margin: 6px;
+    margin-right: 8px;
+}
+
+.level-entry > .text {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+}
+.level-entry > .text > .title {
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    font-size: 0.9em;
+}
+.level-entry > .text > .stats {
+    display: flex;
+    flex-direction: row;
+
+    justify-content: space-between;
+    color: #ccc;
+    font-size: 0.6em;
+}
+@media screen and (max-width: 1300px) {
+    .level-entry > .text > .stats > .author::before {
+        content: "";
+    }
+    .level-entry > .text > .stats > .likes::after {
+        content: "";
+    }
+}
+
+
+.author::before {
+    content: "By "
+}
+
+.likes::after {
+    content: " Likes";
+}
+.inflate {
+    flex-grow: 1;
+}
+
+.selected-level {
+    flex-grow: 1;
+    margin: 4px;
+    padding: 4px;
+    display: flex;
+    flex-direction: column;
+    user-select: none;
+    box-sizing: border-box;
+    overflow-y: auto;
+    overflow-x: hidden;
+    height: 100%;
+}
+.split-window {
+    display: flex;
+    height: max-content;
+    flex-direction: row;
+    box-sizing: border-box;
+}
+.selected-level > .title, .selected-level > .split-window > .description, .selected-level > .split-window > .stats {
+    margin-bottom: 4px;
+    width: 100%;
+    padding: 1rem;
+    box-sizing: border-box;
+}
+.selected-level > .split-window > .description {
+    min-height: 100%;
+    height: fit-content;
+    width: 55%;
+    display: flex;
+    flex-direction: column;
+}
+.selected-level > .split-window > .stats {
+    height: 100%;
+    width: 45%;
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    font-size: 1.5em;
+}
+.selected-level > .split-window > .stats > .like-buttons {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    font-size: 0.75em;
+}
+.selected-level > .split-window > .stats > * {
+    margin-bottom: 8px;
+}
+.selected-level > .split-window > .stats > .difficulty {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+}
+.selected-level > .split-window > .stats > .difficulty > img {
+    width: 64px;
+    height: 64px;
+    margin-right: 12px;
+}
+.stats > .id {
+    font-size: 0.5em;
+    color: #888;
+    text-align: right;
+}
+.stats > .id::before {
+    content: "Id: "
+}
+
+.selected-level > .title {
+    font-size: 2em;
+    text-align: center;
+    position: sticky;
+    top: 0;
+}
+
+#play-current-level {
+    color: inherit;
+    font: inherit;
+    padding: 0.1em;
+    font-size: 1.5em;
+    margin-top: 0.7em;
+    margin-bottom: 0.4em;
+}

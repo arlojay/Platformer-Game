@@ -1,0 +1,57 @@
+body {
+    image-rendering: pixelated;
+}
+
+.success {
+    color: #46A639;
+}
+.error {
+    color: #a73939;
+}
+.info {
+    color: #cbce46;
+}
+
+
+.thumbs-up {
+    background: url("/assets/browse/thumbs_up_out.png");
+    background-size: 2em 2em;
+    width: 2em;
+    height: 2em;
+}
+.thumbs-up:active, .thumbs-up.selected {
+    background: url("/assets/browse/thumbs_up_in.png");
+    background-size: 2em 2em;
+}
+.thumbs-down {
+    background: url("/assets/browse/thumbs_down_out.png");
+    background-size: 2em 2em;
+    width: 2em;
+    height: 2em;
+}
+.thumbs-down:active, .thumbs-down.selected {
+    background: url("/assets/browse/thumbs_down_in.png");
+    background-size: 2em 2em;
+}
+a, button, .level-entry, ::-webkit-scrollbar:hover, .thumbs-up, .thumbs-down {
+    cursor: url('/assets/pointerCursor.png'), auto;
+}
+
+.outset, button, ::-webkit-scrollbar-thumb {
+    border: 4px solid transparent;
+    border-top-color: #48565E;
+    border-left-color: #48565E;
+    border-right-color: #0D252D;
+    border-bottom-color: #0D252D;
+    background: radial-gradient(farthest-corner at 0px 0px, #253B47 0%, #1F313B 100%);
+    box-sizing: border-box;
+}
+.inset, button:active, ::-webkit-scrollbar-track {
+    border: 4px solid transparent;
+    border-top-color: #0D252D;
+    border-left-color: #0D252D;
+    border-right-color: #48565E;
+    border-bottom-color: #48565E;
+    background: radial-gradient(farthest-corner at 0px 0px, #1F313B 0%, #253B47 100%);
+    box-sizing: border-box;
+}

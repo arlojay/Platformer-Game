@@ -71,7 +71,7 @@ class Player extends Entity {
             this.motionX *= this.swimSpeed * (this.invertedGravity ? -1 : 1);
         } else {
             
-            const canJump = this.airTime < 0.02 || this.canDoubleJump;
+            const canJump = this.airTime < 0.06 || this.canDoubleJump;
 
             //Jump if on ground
             if(canJump && jump && !this.jumped) {

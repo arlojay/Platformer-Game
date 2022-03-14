@@ -73,11 +73,27 @@
                 <div class="menu-icon outset close-popup">
                     <img src="assets/menu/exit.png" draggable="false">
                 </div>
-                <h1>Publish Level</h1>
+                <h1>Publish a New Level</h1>
+                <h2 id="submission-message" class="success">&nbsp;</h2>
                 <form>
                     <input type="text" class="level-name inset" placeholder="Name" autocomplete="off" spellcheck="false">
                     <textarea class="level-desc inset" placeholder="Description" spellcheck="false"></textarea>
                 </form>
+                <div class="popup-options">
+                    <input type="button" value="Publish">
+                    <input type="button" value="Save locally">
+                </div>
+            </div>
+        </div>
+        
+        <div class="center-center-align">
+            <div class="popup outset hidden" id="save-online-success-popup">
+                <div class="menu-icon outset close-popup">
+                    <img src="assets/menu/exit.png" draggable="false">
+                </div>
+                <h1>Success</h1>
+                <h2 class="level-id" class="info">Level ID: undefined</h2>
+                <class class="growing-space"></class>
                 <div class="popup-options">
                     <input type="button" value="Publish">
                     <input type="button" value="Save locally">

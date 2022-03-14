@@ -7,6 +7,8 @@ class SpawnFlag extends Entity {
         this.type = "spawnflag";
         this.useGravity = false;
         this.static = true;
+        
+        this.tickInEditor = true;
     }
 }
 

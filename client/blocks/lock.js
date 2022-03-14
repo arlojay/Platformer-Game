@@ -5,7 +5,7 @@ module.exports = class Lock extends require("./block.js") {
 
     static onEntityHit(entity, collision) {
         if(entity.type == "player") {
-            if(entity.holdingEntity.type == "key") {
+            if(entity.holdingEntity?.type == "key") {
                 delete entity.holdingEntity;
                 entity.holdingEntity = null;
 

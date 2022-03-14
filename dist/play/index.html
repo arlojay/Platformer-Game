@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Platformer Game Indev - Loading...</title>
+    <link rel="icon" href="../assets/icon.png">
+    <link href="style.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+    <canvas>
+        <div style="position: absolute; z-index: 1000; display: flex; width: 100vw; height: 100vh; flex-direction: column; background: #441111; color: #ffffff; font-size: 3rem; justify-content: center; align-items: center">
+            <h1>JavaScript is disabled!</h1><br>
+            <p>Please enable JavaScript in site settings to play!</p>
+        </div>
+    </canvas>
+    <div id="overlay">
+        <div class="center-center-align">
+            <div class="popup outset" id="loading-menu">
+                <div class="title-bar">
+                    <h1>Loading</h1>
+                </div>
+                <h2></h2>
+                <div class="center-align loading-gif">
+                    <img src="/assets/loading1.gif">
+                </div>
+                <div class="popup-options vertical"></div>
+            </div>
+        </div>
+        <div class="center-center-align">
+            <div class="popup outset hidden" id="options-menu">
+                <div class="title-bar">
+                    <div class="menu-icon close-popup">
+                        <img src="../assets/menu/exit.png" draggable="false">
+                    </div>
+                    <h1>Options</h1>
+                    <div class="menu-icon close-popup"></div>
+                </div>
+                <div class="popup-options vertical">
+                    <input type="button" value="Quit to Title">
+                    <input type="button" value="Back to Browse">
+                    <input type="button" value="Settings">
+                    <input type="button" value="Level Page">
+                </div>
+            </div>
+        </div>
+        <div class="center-center-align">
+            <div class="popup outset hidden" id="win-screen">
+                <div class="title-bar">
+                    <h1>Level Complete</h1>
+                </div>
+                <h2 class="title">Title</h2>
+                <div class="feedback inset hidden">
+                    <h2>How would you rate this level?</h2>
+                    <div class="like-buttons">
+                        <div class="thumbs-up"></div>
+                        <div class="thumbs-down"></div>
+                    </div>
+                    <div class="difficulty-rating">
+                        <h2>NA</h2>
+                        <div class="buttons">
+                            <img src="/assets/difficulty-ratings/novice.png" draggable="false">
+                            <img src="/assets/difficulty-ratings/easy.png" draggable="false">
+                            <img src="/assets/difficulty-ratings/normal.png" draggable="false">
+                            <img src="/assets/difficulty-ratings/hard.png" draggable="false">
+                            <img src="/assets/difficulty-ratings/expert.png" draggable="false">
+                            <img src="/assets/difficulty-ratings/insane.png" draggable="false">
+                            <img src="/assets/difficulty-ratings/demon.png" draggable="false">
+                        </div>
+                    </div>
+                </div>
+                <div class="popup-options vertical">
+                    <input type="button" value="Open Level Page">
+                    <input type="button" value="Replay">
+                    <input type="button" value="Back to Browse">
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+
+<script src="bundle.js"></script>
+</html>

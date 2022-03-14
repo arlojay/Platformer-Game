@@ -1,7 +1,8 @@
 
 console.log("attach");
-const Viewport = require("./viewport.js");
-const Listener = require("./listeners.js");
+const Viewport = require("../viewport.js");
+const Listener = require("../listeners.js");
+const AssetLoader = require("../assetloader.js")
 
 class Renderer {
     static canvas = null;
@@ -97,7 +98,7 @@ class Renderer {
     }
 
     static drawSpawnFlag(flag) {
-        this.drawImage(assets["menu/spawn"], flag.x, flag.y, 1, 1, flag.rotation);
+        this.drawImage(AssetLoader.assets["menu/spawn"], flag.x, flag.y, 1, 1, flag.rotation);
     }
 
     static drawDeathZone(height) {

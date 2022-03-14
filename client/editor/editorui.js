@@ -1,7 +1,8 @@
 console.log("attach");
 
-const Listener = require("./listeners.js");
-const Input = require("./input.js");
+const Listener = require("../listeners.js");
+const Input = require("../input.js");
+const AssetLoader = require("../assetloader.js");
 
 class EditorUI {
     static blockCategories = [
@@ -51,6 +52,12 @@ class EditorUI {
                 "jumporb",
                 "forcefield",
                 "gravityorb",
+            ]
+        },
+        {
+            "icon": "menu/experimental",
+            "name": "Experimental (Blocks Still in Development)",
+            "blocks": [
                 "lock"
             ]
         }
@@ -82,7 +89,7 @@ class EditorUI {
     }
     
     static selectBlock(name) {
-        let block = blocks[name];
+        let block = AssetLoader.blocks[name];
         if(!block) return;
 
         const clickedElement = document.querySelector(`#category-${this.selectedCategory}-block-${name}`);
@@ -162,7 +169,10 @@ class EditorUI {
 
             categoryElement.classList.add("menu-icon");
             categoryElement.setAttribute("id","category-" + i);
-            imageIcon.src = getIcon(icon);
+            
+            const id = AssetLoader.getIdForBlock(icon);
+            imageIcon.src = id != null ? tilemap.getTileImage(id) : `/assets/${icon}.png`;
+            imageIcon.draggable = false;
 
             categoryElement.appendChild(imageIcon);
             categoryElement.addEventListener("click", (e) => {
@@ -190,8 +200,9 @@ class EditorUI {
 
                 blockElement.classList.add("menu-icon");
                 blockElement.setAttribute("id","category-"+i+"-block-"+block);
-                blockImageIcon.src = getIcon(block);
-
+                blockImageIcon.src = tilemap.getTileImage(AssetLoader.getIdForBlock(block));
+                blockImageIcon.draggable = false;
+                
                 blockElement.appendChild(blockImageIcon);
                 blockGroupElement.appendChild(blockElement);
 
@@ -199,7 +210,7 @@ class EditorUI {
                     this.selectBlock(block);
                 })
 
-                const blockOption = window.blocks[block];
+                const blockOption = AssetLoader.blocks[block];
                 blockElement.addEventListener("mouseover", (e) => {
                     this.showHint(`${blockOption.displayname} | ${blockOption.description}`);
                 })
@@ -213,23 +224,28 @@ class EditorUI {
         }
     }
 
-    static openPublishLevelScreen() {
-        if(this.inPopup) return;
-        
-        const element = document.querySelector("#save-popup");
-
+    static openPopup(element) {
         element.classList.remove("hidden");
         this.inPopup = true;
 
         element.querySelector(".close-popup").addEventListener("click", () => {
             this.inPopup = false;
             element.classList.add("hidden");
-        })
+        });
 
-        element.querySelector("form").addEventListener("submit", (e) => {
+        element.querySelector("form")?.addEventListener("submit", (e) => {
             e.preventDefault();
-        })
+        });
         let options = element.querySelectorAll(".popup-options > input");
+
+        return options
+    }
+
+    static openPublishLevelScreen() {
+        if(this.inPopup) return;
+        
+        const element = document.querySelector("#save-popup");
+        const options = this.openPopup(element);
 
         options[0].onclick = () => {
             const name = element.querySelector(".level-name").value;
@@ -251,6 +267,29 @@ class EditorUI {
                 options[1].disabled = false;
             }, 25)
         }
+    }
+
+    static submissionSuccess(body) {
+        let el = document.querySelector("#submission-message");
+        el.textContent = "Level successfully submitted";
+        el.setAttribute("class","success");
+        
+        const element = document.querySelector("#save-online-success-popup");
+        const options = this.openPopup(element);
+
+        options[0].onclick = () => {
+            window.location = `/browse?level=${body.id}`;
+        }
+        options[1].onclick = () => {
+            element.querySelector(".close-popup").click();
+        }
+
+        element.querySelector(".level-id").textContent = body.id;
+    }
+    static submissionError(body) {
+        let el = document.querySelector("#submission-message");
+        el.textContent = body;
+        el.setAttribute("class","error");
     }
 }
 

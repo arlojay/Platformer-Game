@@ -13,6 +13,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@replit/database": "^2.0.1",
     "babel-core": "^6.26.3",
     "babel-preset-es2015": "^6.24.1",
     "body-parser": "^1.19.1",

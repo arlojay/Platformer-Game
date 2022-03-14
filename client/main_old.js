@@ -11,12 +11,6 @@ with(window) {
         Input = require("./input.js");
         ServerInterface = require("./serverinterface.js");
     
-        Entity = require("./entities/entity.js");
-        Player = require("./entities/player.js");
-        BouncyBall = require("./entities/bouncyball.js");
-        SpawnFlag = require("./entities/spawnflag.js");
-        Fireball = require("./entities/fireball.js");
-    
         Viewport = require("./viewport.js");
         Renderer = require("./renderer.js");
     
@@ -31,98 +25,16 @@ with(window) {
         Number.prototype.mod = function (n) {
             return ((this % n) + n) % n;
         };
-        String.prototype.compress = function() {
-            return LZUTF8.compressToEncodedURIComponent(this);
-        }
-        String.prototype.decompress = function() {
-            return LZUTF8.decompressFromEncodedURIComponent(this);
-        }
-        String.compress = function(text) {
-            return LZUTF8.compressToEncodedURIComponent(text);
-        }
-        String.decompress = function(text) {
-            return LZUTF8.decompressFromEncodedURIComponent(text);
-        }
-}
-    entities = new Map();
+    }
+
     player = null;
     spawnflag = null;
     selectedItem = null;
     mouseOverUI = false;
     assets = {};
-
-    //Only tick these objects if simulating is true
-    gameObjectSimulators = ["fireball"];
     simulating = false;
 
     deathZone = 130;
-
-    blocks = {
-        findId: function(id) {
-            for(let i of Object.values(this)) {
-                if(i.id == id) return i;
-            }
-            return null;
-        }
-    };
-
-    idGenerator = (function*() {
-        let n = 0;
-        while(true) {
-            let v = n++;
-            let hash = Hasher.sha256(`${v}`);
-            yield hash.substr(0,16);
-        }
-    })();
-
-    loadAssets = function(...names) {
-        return new Promise(async (resolve, reject) => {
-            let promises = [];
-            for(let name of names) {
-                promises.push(new Promise((res,rej) => {
-                    let img = new Image();
-                    img.onload = () => {
-                        window.assets[name] = img;
-                        res(img);
-                    }
-                    img.src = `assets/${name}.png`;
-                }));
-            }
-
-            for(let promise of promises) {
-                await promise;
-            }
-
-            resolve();
-        })
-    }
-
-    removeEntity = function(id) {
-        const ent = entities.get(id);
-        if(!ent) return;
-
-        ent.kill();
-        entities.delete(id);
-    }
-
-    spawnEntity = function(ent, x, y, options = {}) {
-        const instance = new ent(x,y);
-        Object.assign(instance, options);
-        instance.createCollider();
-
-        const id = idGenerator.next().value;
-        instance.id = id;
-
-        entities.set(id, instance);
-        return instance;
-    }
-
-    loadBlocks = function(...names) {
-        names.forEach((name) => {
-            const block = require(`./blocks/${name}.js`);
-            window.blocks[name] = block;
-        })
-    }
 
     getIcon = function(id) {
         //Convert string id to numerical id
@@ -136,14 +48,14 @@ with(window) {
         Input.listen(document.body);
         
         //Load tilemap
-        tilemap = new Tilemap(1024,1024);
+        tilemap = new Tilemap(256,256);
         const [ texture, uvs ] = await tilemap.setTexture({
             src: "assets/blocks.png",
         });
         
         //Load textures
         await loadAssets("menu/debug", "menu/eraser", "menu/exit", "menu/handle", "menu/import", "menu/save", "menu/settings", "menu/spawn", "menu/start", "menu/stop", "basicCursor", "brushCursor", "player");
-        loadBlocks("brick","spike","flag","chain","metal","water","invisible","bouncepad","jumporb","grate","roundspike","spawnpoint","lava","forcefield","wood","gravityorb", "levetatingblock","sludge","flagblock","spawnpointblock","technochain","technometal","blue","lock","fireballshooter");
+        
 
 
         //Setup scene
@@ -182,7 +94,7 @@ with(window) {
 
             //Kill all game entities
             entities.forEach((el, i) => {
-                if(gameObjectSimulators.includes(el.type)) {
+                if(el.killAtSessionEnd) {
                     removeEntity(el.id);
                 }
             })
@@ -199,7 +111,10 @@ with(window) {
 
         Editor.addEventListener("save-online", async (data) => {
             console.log("publish",data);
-            await ServerInterface.publishLevel(data);
+            const { status, body } = await ServerInterface.publishLevel(data);
+
+            if(status == 500) Editor.submissionError(body);
+                         else Editor.submissionSuccess(body);
         })
 
         //Called whenever a frame is drawn
@@ -254,7 +169,7 @@ with(window) {
 
         //Tick all entities
         entities.forEach((entity) => {
-            const isGameObject = gameObjectSimulators.includes(entity.type) || entity.type == "player";
+            const isGameObject = !entity.simulateInEditor;
             if(isGameObject && !simulating) return;
             entity.update(tilemap);
         })

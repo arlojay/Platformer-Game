@@ -26,6 +26,26 @@ canvas {
     filter: saturate(0.5);
 }
 
+::-webkit-scrollbar {
+    width: 4px;
+}
+::-webkit-scrollbar-track {
+    border: 1px solid transparent;
+    border-top-color: #0D252D;
+    border-left-color: #0D252D;
+    border-right-color: #48565E;
+    border-bottom-color: #48565E;
+    background: radial-gradient(farthest-corner at 0px 0px, #1F313B 0%, #253B47 100%);
+}
+::-webkit-scrollbar-thumb {
+    border: 1px solid transparent;
+    border-top-color: #48565E;
+    border-left-color: #48565E;
+    border-right-color: #0D252D;
+    border-bottom-color: #0D252D;
+    background: radial-gradient(farthest-corner at 0px 0px, #253B47 0%, #1F313B 100%);
+}
+
 #overlay {
     --ui-scale: 3;
     position: absolute;
@@ -149,6 +169,9 @@ canvas {
 .center-align > * {
     pointer-events: all;
 }
+.growing-space {
+    flex-grow: 1;
+}
 #editor-menu-items {
     display: flex;
     flex-direction: row;
@@ -178,13 +201,16 @@ canvas {
 }
 
 .popup {
-    width: 150px;
-    height: 150px;
+    min-width: 150px;
+    min-height: 75px;
+    width: fit-content;
+    height: fit-content;
     padding: 0.5rem;
     box-sizing: border-box;
     pointer-events: all;
     display: flex;
     flex-direction: column;
+    color: #fff;
 }
 @keyframes open-popup {
     0% {
@@ -218,12 +244,27 @@ canvas {
 }
 .popup > h1 {
     width: 100%;
-    color: #fff;
     text-align: center;
     font-size: 1.5rem;
     font-weight: 500;
     margin: 0px;
-    margin-bottom: 1rem;
+    margin-bottom: 0.3rem;
+}
+.success {
+    color: #46A639;
+}
+.error {
+    color: #a73939;
+}
+.info {
+    color: #cbce46;
+}
+.popup > h2 {
+    font-size: 0.5rem;
+    margin-bottom: 0.2rem;
+    font-weight: normal;
+    width: 100%;
+    text-align: center;
 }
 .popup > form {
     width: 100%;
@@ -249,6 +290,7 @@ form > input {
 }
 form > textarea {
     resize: none;
+    min-height: 85px;
     flex-grow: 1;
 }
 .popup-options {
@@ -280,12 +322,7 @@ form > textarea {
     pointer-events: all;
 }
 .popup-options > input:focus-visible {
-    border-top-color: rgb(94, 72, 72);
-    border-left-color: rgb(94, 72, 72);
-    border-right-color: rgb(45, 13, 13);
-    border-bottom-color: rgb(45, 13, 13);
-    background: radial-gradient(farthest-corner at 0px 0px, rgb(71, 37, 37) 0%, rgb(59, 31, 31) 100%);
-    outline: none;
+    outline: 0.5px solid #fff;
 }
 .popup-options > input:active {
     border-top-color: #0D252D;

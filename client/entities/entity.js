@@ -1,3 +1,5 @@
+const AssetLoader = require("../assetloader.js");
+
 class PointCollider {
     constructor(x,y) {
         this.offsetx = x;
@@ -32,6 +34,12 @@ class Entity {
 
         //Is the rigidbody affected by gravity?
         this.useGravity = true;
+
+        //Does the entity tick in the editor or only in-game?
+        this.tickInEditor = false;
+
+        //Kill at end of playtesting?
+        this.killAtSessionEnd = false;
 
         //Entity motion
         this.motionX = 0;
@@ -187,7 +195,7 @@ class Entity {
             const [ colliding, block ] = collider.update(this, tilemap);
 
             //Get behavior instance (contains onEntityHit)
-            const blockReference = blocks.findId(block.id);
+            const blockReference = AssetLoader.blocks[AssetLoader.getNameForBlock(block.id)];
             collisions.push({ colliding, block: blockReference, tile: block, collider });
         }
         return collisions;

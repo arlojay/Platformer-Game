@@ -1,3 +1,4 @@
+const EntityHandler = require("../entityhandler.js");
 const Entity = require("./entity.js");
 
 class Fireball extends Entity {
@@ -10,6 +11,7 @@ class Fireball extends Entity {
         this.drag = 1;
         
         this.killable = true;
+        this.killAtSessionEnd = true;
 
         this.life = 1000;
     }
@@ -18,7 +20,7 @@ class Fireball extends Entity {
         this.updatePhysics(tilemaps);
 
         if(this.motionX == 0 && this.motionY == 0) {
-            removeEntity(this.id);
+            EntityHandler.removeEntity(this.id);
         }
 
         if(this.life-- < 0) removeEntity(this.id);

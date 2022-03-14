@@ -10,6 +10,7 @@ class BouncyBall extends Entity {
         this.drag = 0.99;
         
         this.killable = true;
+        this.killAtSessionEnd = true;
     }
 
     update(tilemaps) {

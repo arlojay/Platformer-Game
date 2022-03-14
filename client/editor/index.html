@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Platformer Game Indev</title>
-    <link rel="icon" href="assets/icon.png">
+    <title>Platformer Game Indev - Editor</title>
+    <link rel="icon" href="../assets/icon.png">
     <link href="style.css" rel="stylesheet" type="text/css" />
 </head>
 <body>
@@ -19,46 +19,46 @@
             <div class="container outset" id="editor-menu-items">
                 <div class="inset">
                     <div class="menu-icon" id="spawn">
-                        <img src="assets/menu/spawn.png" draggable="false">
+                        <img src="../assets/menu/spawn.png" draggable="false">
                     </div>
                     <div class="menu-icon" id="eraser">
-                        <img src="assets/menu/eraser.png" draggable="false">
+                        <img src="../assets/menu/eraser.png" draggable="false">
                     </div>
                 </div>
                 <div class="inset">
                     <div class="menu-icon" id="save">
-                        <img src="assets/menu/save.png" draggable="false">
+                        <img src="../assets/menu/save.png" draggable="false">
                     </div>
                     <div class="menu-icon" id="import">
-                        <img src="assets/menu/import.png" draggable="false">
+                        <img src="../assets/menu/import.png" draggable="false">
                     </div>
                 </div>
                 <div class="inset">
                     <div class="menu-icon" id="start">
-                        <img src="assets/menu/start.png" draggable="false">
+                        <img src="../assets/menu/start.png" draggable="false">
                     </div>
                     <div class="menu-icon" id="settings">
-                        <img src="assets/menu/settings.png" draggable="false">
+                        <img src="../assets/menu/settings.png" draggable="false">
                     </div>
                 </div>
             </div>
         </div>
         <div class="container outset" id="editor-selected-block">
             <div class="menu-icon static">
-                <img src="assets/null.png" draggable="false">
+                <img src="../assets/null.png" draggable="false">
             </div>
         </div>
         <div class="container outset" id="editor-selection-tools">
             <div class="menu-icon" id="brush">
-                <img src="assets/brushCursor.png" draggable="false">
+                <img src="../assets/brushCursor.png" draggable="false">
             </div>
             <div class="menu-icon" id="select">
-                <img src="assets/basicCursor.png" draggable="false">
+                <img src="../assets/basicCursor.png" draggable="false">
             </div>
         </div>
         <div class="container outset hidden" id="editor-playtesting-menu">
             <div class="menu-icon" id="stop">
-                <img src="assets/menu/stop.png" draggable="false">
+                <img src="../assets/menu/stop.png" draggable="false">
             </div>
         </div>
         <div class="container outset" id="selection-hint" hidden></div>
@@ -70,10 +70,14 @@
         </div>
         <div class="center-center-align">
             <div class="popup outset hidden" id="save-popup">
-                <div class="menu-icon outset close-popup">
-                    <img src="assets/menu/exit.png" draggable="false">
+                <div class="title-bar">
+                    <div class="menu-icon close-popup">
+                        <img src="../assets/menu/exit.png" draggable="false">
+                    </div>
+                    <h1>Publish a New Level</h1>
+                    <div class="menu-icon close-popup"></div>
                 </div>
-                <h1>Publish Level</h1>
+                <h2 id="submission-message" class="success">&nbsp;</h2>
                 <form>
                     <input type="text" class="level-name inset" placeholder="Name" autocomplete="off" spellcheck="false">
                     <textarea class="level-desc inset" placeholder="Description" spellcheck="false"></textarea>
@@ -84,8 +88,26 @@
                 </div>
             </div>
         </div>
+        
+        <div class="center-center-align">
+            <div class="popup outset hidden" id="save-online-success-popup">
+                <div class="title-bar">
+                    <div class="menu-icon close-popup">
+                        <img src="../assets/menu/exit.png" draggable="false">
+                    </div>
+                    <h1>Success</h1>
+                    <div class="menu-icon close-popup"></div>
+                </div>
+                <h2 class="level-id" class="info">Level ID: undefined</h2>
+                <class class="growing-space"></class>
+                <div class="popup-options">
+                    <input type="button" value="View Page">
+                    <input type="button" value="Close">
+                </div>
+            </div>
+        </div>
     </div>
 </body>
 
-<script src="main.js"></script>
+<script src="bundle.js"></script>
 </html>

@@ -4,8 +4,18 @@ const exws = require("express-ws");
 const path = require("path");
 const helmet = require("helmet");
 const bodyParser = require('body-parser');
+const http = require("http");
 
 const ClientInterface = require("./clientinterface.js");
+
+function getStatusPage(code) {
+    let status = (`${code}`).replace(/[^0-9]/g,"");
+    status = Number(status);
+    const filePath = path.join(__dirname,"../statuses/"+status+".html");
+    
+    if(fs.existsSync(filePath)) return fs.readFileSync(filePath).toString();
+    else return fs.readFileSync(path.join(__dirname,"../statuses/unknown.html")).toString().replace("${code}",status);
+}
 
 class Server {
     static server = express();
@@ -53,36 +63,62 @@ class Server {
             }
         }
 
-        this.server.get("/", (req, res) => {
-            if(req.headers.host == "arlojay.com") return res.sendFile(path.join(__dirname,"../dist/construction.html"));
-            return res.sendFile(path.join(__dirname,"../dist/game.html"));
-        })
-        this.server.get("/game.html", (req, res) => {
+        this.server.get("/", (req, res, next) => {
             if(req.headers.host == "arlojay.com") {
-                res.status(403);
-                return res.end();
+                res.sendFile(path.join(__dirname,"../dist/construction.html"));
+            } else {
+                next();
             }
-            return res.sendFile(path.join(__dirname,"../dist/game.html"));
         })
-        this.server.post("/publish", (req, res) => {
+
+        this.server.get("/browse/list", async (req, res, next) => {
+            if(!req.query.sort) return next();
+
+            let ret = await ClientInterface.levelList(req);
+            res.status(200).send(JSON.stringify(ret));
+        })
+
+        this.server.get("/level", async (req, res, next) => {
+            if(!req.query.id) return next();
+
+            let ret = await ClientInterface.getLevel(req);
+            if(!ret) return next();
+            res.status(200).send(JSON.stringify(ret));
+        })
+        
+        this.server.post("/publish", async (req, res) => {
             let error = null;
             let ret = null;
             try {
-                
-                ret = ClientInterface.publish(req);
+                ret = await ClientInterface.publish(req);
             } catch(e) {
                 error = e ?? null;
                 console.error(e);
             }
 
-            if(error) res.status(500).write(JSON.stringify(error));
+            if(error) res.status(500).write(typeof error == "string" ? error : JSON.stringify(error));
             else res.status(200).write(JSON.stringify(ret));
 
             res.end();
         })
+
+        this.server.get("/statustest/*", (req, res) => {
+            let status = req.path.replace(/[^0-9]/g,"");
+            status = Number(status);
+            
+            if(!fs.existsSync(path.join(__dirname, "../dist", req.path))) return res.status(http.STATUS_CODES[status] ? status : 500).send(getStatusPage(status));
+        })
+        
         this.server.use(express.static(path.join(__dirname,"../dist/"), options));
 
         this.server.use("/assets/", express.static(path.join(__dirname, "../client/assets")));
+
+        this.server.get("*", (req, res, next) => {
+            if(!fs.existsSync(path.join(__dirname, "../dist", req.path))) return res
+                .status(404).send(getStatusPage(404));
+
+            next();
+        })
     }
 }
 

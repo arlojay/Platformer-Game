@@ -1,9 +1,11 @@
 console.log("attach");
 const EditorUI = require("./editorui.js");
-const Input = require("./input.js");
+const Input = require("../input.js");
 const Renderer = require("./renderer.js");
-const SelectedItem = require("./entities/selecteditem.js");
-const Listener = require("./listeners.js");
+const SelectedItem = require("../entities/selecteditem.js");
+const Listener = require("../listeners.js");
+const EntityHandler = require("../entityhandler.js");
+const AssetLoader = require("../assetloader.js");
 
 function compressLevel(name, desc, blocks) {
     blocks ??= tilemap.save();
@@ -34,67 +36,68 @@ class Editor {
         EditorUI.setup();
 
         
-        this.selectedItemEntity = spawnEntity(SelectedItem, 0, 0);
+        this.selectedItemEntity = EntityHandler.spawnEntity(SelectedItem, 0, 0);
         this.selectedItemEntity.texture = new Image();
-
-        EditorUI.addEventListener("*", (type, ...args) => {
-            this.dispatchEvent(type, ...args);
-        });
-        EditorUI.addEventListener("start", () => {
-            this.setTesting(true);
-            document.querySelector("canvas").style.cursor = "default";
-        });
-        EditorUI.addEventListener("stop", () => {
-            this.setTesting(false);
-            document.querySelector("canvas").style.cursor = `url('assets/${this.tool == 0 ? "brushCursor.png" : "basicCursor.png"}'), auto`;
-        });
-        EditorUI.addEventListener("eraser", () => {
-            this.selectedItemEntity.texture.src = assets["menu/eraser"].src;
-            this.selectedItemEntity.rotation = 0;
-        });
-        EditorUI.addEventListener("spawn", () => {
-            this.holdingEntity = spawnflag;
-        });
-        EditorUI.addEventListener("save", () => {
-            EditorUI.openPublishLevelScreen();
-        })
-        EditorUI.addEventListener("selectblock", (name) => {
-            this.selectedItemEntity.rotation = EditorUI.rotation * (Math.PI/2);
-            this.selectedItemEntity.texture.src = getIcon(name);
+        {
+            EditorUI.addEventListener("*", (type, ...args) => {
+                this.dispatchEvent(type, ...args);
+            });
+            EditorUI.addEventListener("start", () => {
+                this.setTesting(true);
+                document.querySelector("canvas").style.cursor = "url('/assets/basicCursor.png'), auto";
+            });
+            EditorUI.addEventListener("stop", () => {
+                this.setTesting(false);
+                document.querySelector("canvas").style.cursor = `url(/'assets/${this.tool == 0 ? "brushCursor.png" : "basicCursor.png"}'), auto`;
+            });
+            EditorUI.addEventListener("eraser", () => {
+                this.selectedItemEntity.texture.src = AssetLoader.assets["menu/eraser"].src;
+                this.selectedItemEntity.rotation = 0;
+            });
+            EditorUI.addEventListener("spawn", () => {
+                this.holdingEntity = spawnflag;
+            });
+            EditorUI.addEventListener("save", () => {
+                EditorUI.openPublishLevelScreen();
+            })
+            EditorUI.addEventListener("selectblock", (name) => {
+                this.selectedItemEntity.rotation = EditorUI.rotation * (Math.PI/2);
+                this.selectedItemEntity.texture.src = getIcon(name);
+                
+                const selectedBlock = AssetLoader.blocks[name];
+                if(!selectedBlock || !selectedBlock.rotatable) this.selectedItemEntity.rotation = 0;
+            });
+            EditorUI.addEventListener("rotate", (rotation) => {
+                this.selectedItemEntity.rotation = rotation * (Math.PI/2);
+    
+                const rotatedBlock = AssetLoader.blocks[EditorUI.selectedBlockName];
+                if(!rotatedBlock || !rotatedBlock.rotatable) this.selectedItemEntity.rotation = 0;
+            });
+            EditorUI.addEventListener("select", () => {
+                this.tool = 1;
+                document.querySelector("canvas").style.cursor = "url('/assets/basicCursor.png'), auto";
+            });
+            EditorUI.addEventListener("brush", () => {
+                this.tool = 0;
+                document.querySelector("canvas").style.cursor = "url('/assets/brushCursor.png'), auto";
+            });
             
-            const selectedBlock = blocks[name];
-            if(!selectedBlock || !selectedBlock.rotatable) this.selectedItemEntity.rotation = 0;
-        });
-        EditorUI.addEventListener("rotate", (rotation) => {
-            this.selectedItemEntity.rotation = rotation * (Math.PI/2);
-
-            const rotatedBlock = blocks[EditorUI.selectedBlockName];
-            if(!rotatedBlock || !rotatedBlock.rotatable) this.selectedItemEntity.rotation = 0;
-        });
-        EditorUI.addEventListener("select", () => {
-            this.tool = 1;
-            document.querySelector("canvas").style.cursor = "url('assets/basicCursor.png'), auto";
-        });
-        EditorUI.addEventListener("brush", () => {
-            this.tool = 0;
-            document.querySelector("canvas").style.cursor = "url('assets/brushCursor.png'), auto";
-        });
-
-        EditorUI.addEventListener("click-save-locally", (name, desc) => {
-            const save = compressLevel(name, desc);
-            this.dispatchEvent("save-locally", save);
-        });
-        EditorUI.addEventListener("click-save-online", (name, desc) => {
-            const save = compressLevel(name, desc);
-            this.dispatchEvent("save-online", save);
-        });
-
+            document.querySelector("canvas").style.cursor = "url('/assets/brushCursor.png'), auto";
+    
+            EditorUI.addEventListener("click-save-locally", (name, desc) => {
+                const save = compressLevel(name, desc);
+                this.dispatchEvent("save-locally", save);
+            });
+            EditorUI.addEventListener("click-save-online", (name, desc) => {
+                const save = compressLevel(name, desc);
+                this.dispatchEvent("save-online", save);
+            });
+        }
         //Zoom view in and out
         document.body.addEventListener("wheel", (e) => {
             if(this.testing || EditorUI.inPopup) return;
             
             if(e.deltaY > 0) {
-                console.log("in")
                 Renderer.viewport.zoom /= 1.1;
             } else {
                 Renderer.viewport.zoom *= 1.1;
@@ -142,7 +145,7 @@ class Editor {
         let selectedItemPos = Renderer.getWorldPos(Input.mouseX, Input.mouseY);
         let dist = Math.sqrt((selectedItemPos[0] - lastItemPos[0])**2 + (selectedItemPos[1] - lastItemPos[1])**2);
 
-        this.selectedItemEntity.hidden = (!!this.holdingEntity) || (this.testing) || (EditorUI.inPopup);
+        this.selectedItemEntity.hidden = (this.holdingEntity) || (this.testing) || (EditorUI.inPopup);
 
         if(!this.testing && !EditorUI.inPopup) {
             if(this.panning) {
@@ -161,7 +164,7 @@ class Editor {
             } else {
                 this.selectedItemEntity.x += ((Math.floor(selectedItemPos[0]) + 0.5) - this.selectedItemEntity.x) / 4;
                 this.selectedItemEntity.y += ((Math.floor(selectedItemPos[1]) + 0.5) - this.selectedItemEntity.y) / 4;
-                this.selectedItemEntity.hidden = this.tool != 0;
+                this.selectedItemEntity.hidden ||= this.tool != 0;
 
                 if(this.holdingEntity) {
                     this.holdingEntity.x = this.selectedItemEntity.x;
@@ -182,7 +185,7 @@ class Editor {
                 let dy = lastItemPos[1] - selectedItemPos[1];
                 
                 let rotation = EditorUI.rotation;
-                const block = blocks[EditorUI.selectedBlockName];
+                const block = AssetLoader.blocks[EditorUI.selectedBlockName];
                 const rotatable = block?.rotatable ?? false;
 
                 for(let i = 0; i <= 1; i += 1/dist) {
@@ -228,6 +231,13 @@ class Editor {
         }
         
         this.dispatchEvent(testing ? "start" : "stop");
+    }
+
+    static submissionError(body) {
+        EditorUI.submissionError(body);
+    }
+    static submissionSuccess(body) {
+        EditorUI.submissionSuccess(body);
     }
 }
 

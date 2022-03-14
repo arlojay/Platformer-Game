@@ -2,28 +2,46 @@
 console.log("attach");
 class ServerInterface {
     static async post(url, data) {
-        return new Promise((res,rej) => {
-            const req = new XMLHttpRequest();
-            req.onreadystatechange = () => {
-                if(req.readyState != XMLHttpRequest.DONE) return;
+        let res = await fetch(url, {
+            method: "post",
+            body: JSON.stringify(data)
+        });
 
-                if(req.status != 200) rej("Error with code "+req.status);
+        let resBody = await res.text();
+        try {
+            resBody = JSON.parse(resBody);
+        } catch(e) {}
 
-                let p = null;
-                try {
-                    p = JSON.parse(req.responseText);
-                } catch(e){} finally {
-                    res(p ?? req.responseText);
-                }
-            }
+        const { status } = res;
+        return { body: resBody, status };
+    }
+    static async get(url, query) {
+        let q = [];
+        for(let key of Object.keys(query)) {
+            q.push(`${key}=${query[key]}`);
+        }
+        
+        if(query) url += "?"+q.join("&");
+        
+        let res = await fetch(url, {
+            method: "get"
+        });
 
-            req.open("POST", url, true);
-            req.send(JSON.stringify(data));
-        })
+        let resBody = await res.text();
+        try {
+            resBody = JSON.parse(resBody);
+        } catch(e) {}
+
+        const { status } = res;
+        return { body: resBody, status };
     }
 
     static async publishLevel(data) {
         return await this.post("/publish", data);
+    }
+
+    static async getLevel(id) {
+        return await this.get("/level", { id });
     }
 }
 
