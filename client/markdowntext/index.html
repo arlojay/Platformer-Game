@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+    <head>
+        <link rel="stylesheet" href="./style.css">
+    </head>
+    <body>
+        <div id="options">
+            <img class="pointercursor" draggable="false" src="/assets/text/bold.png" id="bold"></img>
+            <img class="pointercursor" draggable="false" src="/assets/text/italic.png" id="italic"></img>
+            <img class="pointercursor" draggable="false" src="/assets/text/underlined.png" id="underlined"></img>
+            <div class="gap"></div>
+            <img class="pointercursor" draggable="false" src="/assets/text/left.png" id="left-justify" disabled></img>
+            <img class="pointercursor" draggable="false" src="/assets/text/center.png" id="center-justify" disabled></img>
+            <img class="pointercursor" draggable="false" src="/assets/text/right.png" id="right-jusify" disabled></img>
+            <div class="gap"></div>
+            <img class="pointercursor" draggable="false" src="/assets/text/link.png" id="insert-link" disabled></img>
+            <img class="pointercursor" draggable="false" src="/assets/text/image.png" id="insert-image" disabled></img>
+            <div class="gap"></div>
+            <div class="dropdown" data-open="true">
+                <option value="0">0.5em</option>
+                <option value="1">0.75em</option>
+                <option value="2">1em</option>
+                <option value="3">1.25em</option>
+                <option value="4">1.5em</option>
+                <option value="5">2em</option>
+                <option value="5">3em</option>
+                <option value="5">4em</option>
+            </div>
+        </div>
+        <div contenteditable="true" id="textarea" class="inset textcursor"></div>
+    </body>
+    <script src="./bundle.js"></script>
+</html>

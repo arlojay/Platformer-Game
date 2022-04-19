@@ -206,46 +206,6 @@ input[type="text"], textarea {
 }
 
 /* Popups */
-.center-center-align {
-    width: 100%;
-    height: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    pointer-events: none !important;
-}
-
-.popup {
-    min-width: 150px;
-    min-height: 75px;
-    width: fit-content;
-    height: fit-content;
-    padding: 0.5rem;
-    box-sizing: border-box;
-    pointer-events: all;
-    display: flex;
-    flex-direction: column;
-    color: #fff;
-}
-@keyframes open-popup {
-    0% {
-        transform: scale(0);
-    }
-    50% {
-        transform: scale(1.1);
-    }
-    70% {
-        transform: scale(0.95);
-    }
-    100% {
-        transform: scale(1);
-    }
-}
-.popup:not(.hidden) {
-    animation: open-popup;
-    animation-duration: 0.3s;
-    animation-timing-function: ease-out;
-}
 .close-popup {
     margin-left: -8px;
     margin-top: -8px;
@@ -321,25 +281,12 @@ form > textarea {
     font-family: inherit;
     padding-bottom: 0.15rem;
 
-    border: 1px solid transparent;
-    border-top-color: #48565E;
-    border-left-color: #48565E;
-    border-right-color: #0D252D;
-    border-bottom-color: #0D252D;
-    background: radial-gradient(farthest-corner at 0px 0px, #253B47 0%, #1F313B 100%);
-    box-sizing: border-box;
+    border-width: 1px !important;
 
     pointer-events: all;
 }
 .popup-options > input:focus-visible {
     outline: 0.5px solid #fff;
-}
-.popup-options > input:active {
-    border-top-color: #0D252D;
-    border-left-color: #0D252D;
-    border-right-color: #48565E;
-    border-bottom-color: #48565E;
-    background: radial-gradient(farthest-corner at 0px 0px, #1F313B 0%, #253B47 100%);
 }
 #level-id:before {
     content: "Level ID: "

@@ -95,7 +95,7 @@ with(window) {
             //Kill all game entities
             EntityHandler.entities.forEach((el, i) => {
                 if(gameObjectSimulators.includes(el.type)) {
-                    removeEntity(el.id);
+                    EntityHandler.removeEntity(el.id);
                 }
             })
         })

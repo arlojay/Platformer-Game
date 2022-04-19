@@ -37,6 +37,7 @@ class EntityHandler {
 
     static spawnEntity(ent, x, y, options = {}) {
         if(typeof ent != "function") ent = this.entityTypes[ent];
+        console.log(this.entityTypes, ent, this.entityTypes[ent]);
         if(!ent) throw new TypeError("Entity not of type class or not found in class list");
         
         //Create new instance of the entity

@@ -1,0 +1,65 @@
+@import url("/globals.css");
+
+html {
+    width: 100vw;
+    height: 100vh;
+}
+
+body {
+    width: 100%;
+    height: 100%;
+    margin: 0px;
+    background: transparent;
+
+    font: 26px "monogram", arial, sans-serif;
+    color: #fff;
+
+    display: grid;
+    grid-template-rows: min-content auto;
+}
+#textarea {
+    font: inherit;
+    margin: 2px;
+    resize: none;
+    color: inherit;
+
+    overflow: hidden;
+}
+
+.dropdown {
+    width: 128px;
+}
+.dropdown .options {
+    max-height: 75vh;
+    overflow-y: auto;
+}
+
+#options img {
+    filter: brightness(1.5);
+    
+    width: 32px;
+    height: 32px;
+}
+.gap {
+    width: 1em;
+}
+#options img {
+    user-select: none;
+}
+#options {
+    display: grid;
+    grid-template-columns: repeat(11, min-content) auto;
+
+    box-sizing: border-box;
+    
+    padding: 4px;
+    gap: 4px;
+}
+
+a {
+    color: #5F8AAD;
+    text-decoration: underline;
+}
+a:visited {
+    color: #5F69AF;
+}

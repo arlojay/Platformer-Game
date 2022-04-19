@@ -25,12 +25,13 @@ async function checkExistence(id) {
     return !!v;
 }
 
-module.exports = async function*(dbInst) {
+module.exports = async function*(dbInst, mode) {
+    mode ??= "level";
     db = dbInst;
     
     while(true) {
         let id = createId();
-        while(await checkExistence(id)) id = createId();
+        if(mode == "level") while(await checkExistence(id)) id = createId();
 
         yield id;
     }

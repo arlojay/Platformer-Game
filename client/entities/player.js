@@ -13,7 +13,7 @@ class Player extends Entity {
         this.width = 0.75;
         this.height = 0.75;
 
-        this.speed = 1.2;
+        this.speed = 1.8;
         this.swimSpeed = 0.95;
         this.jumpHeight = 21;
         this.jumped = false;

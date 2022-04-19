@@ -23,9 +23,12 @@ class Fireball extends Entity {
             EntityHandler.removeEntity(this.id);
         }
 
-        if(this.life-- < 0) removeEntity(this.id);
+        if(this.life-- < 0) EntityHandler.removeEntity(this.id);
 
-        if(Math.sqrt((this.x - player.x) ** 2 + (this.y - player.y)**2) < 1) player.kill();
+        if(Math.sqrt((this.x - player.x) ** 2 + (this.y - player.y)**2) < 1) {
+            player.kill();
+            EntityHandler.removeEntity(this.id);
+        }
     }
 }
 

@@ -5,7 +5,7 @@ const Database = require("@replit/database");
 const db = new Database();
 
 //Needs database instance to know if id is taken or not
-const idGenerator = require("./idgenerator.js")(db);
+const idGenerator = require("./idgenerator.js")(db, "level");
 
 const levelCache = new Map();
 
@@ -39,15 +39,15 @@ async function userifyLevel(level, options) {
     if(clone) return JSON.parse(JSON.stringify(level));
     return level;
 }
-async function getLevel(id) {
+async function getLevel(id, options) {
     let value = levelCache.get(id);
-    if(value) return userifyLevel(value);
+    if(value) return userifyLevel(value, options);
 
     value = await db.get("levels/"+id);
     if(!value) return;
     
     levelCache.set(id, value);
-    return userifyLevel(value);
+    return userifyLevel(value, options);
 }
 
 class ClientInterface {
@@ -123,7 +123,7 @@ class ClientInterface {
         const keys = await db.list("levels/");
         for(let i of keys) {
             let key = i.replace("levels/","");
-            let value = await getLevel(key,{ clone: true });
+            let value = await getLevel(key, { clone: true });
             
             delete value.blocks;
             levels.push(value);

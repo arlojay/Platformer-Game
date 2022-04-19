@@ -1,25 +1,9 @@
 console.log("attach");
-const Input = require("../input.js");
 const Renderer = require("./renderer.js");
-const SelectedItem = require("../entities/selecteditem.js");
 const ServerInterface = require("../serverinterface.js");
 const Listener = require("../listeners.js");
-const EntityHandler = require("../entityhandler.js");
-const AssetLoader = require("../assetloader.js");
+const { getSearchQuery, capitalizeFirstLetter } = require("../utils.js");
 
-function capitalizeFirstLetter(string) {
-  return string.charAt(0).toUpperCase() + string.slice(1);
-}
-function getSearchQuery() {
-    let values = {};
-    window.location.search.replace(/\?/g,"").split("&").forEach(elem => {
-        let props = elem.split("=");
-        let key = props.splice(0,1)[0];
-        let value = props.join("=");
-        values[key] = value;
-    });
-    return values;
-}
 class Play {
     static hideStartScreen() {
         const el = document.querySelector("#loading-menu");
@@ -36,9 +20,10 @@ class Play {
         playButton.type = "button";
         playButton.value = "Play";
         
-        const browseButton = document.createElement("input");
-        browseButton.type = "button";
-        browseButton.value = "Back to browse";
+        const browseButton = document.createElement("a");
+        browseButton.classList.add("button");
+        browseButton.innerText = "Back to browse";
+        browseButton.href = "/browse";
         
         popupOptions.appendChild(playButton);
         popupOptions.appendChild(browseButton);
@@ -93,7 +78,7 @@ class Play {
         let levelData = await ServerInterface.getLevel(level);
         window.level = levelData.body;
 
-        document.querySelector("title").innerText = `Platformer Game Indev - ${levelData.body.title}`;
+        document.querySelector("title").innerText = `Platformer Game Indev - ${levelData.body.name}`;
         
         tilemap.load(levelData.body.blocks);
 
@@ -107,8 +92,11 @@ class Play {
 
         setTimeout(() => {
             this.showStartScreen();
-            this.showWinScreen();
         },250);
+
+        [...document.querySelectorAll(".open-level-page")].forEach(el => {
+            el.href = "/browse?level="+level;
+        })
     }
     static draw() {
         

@@ -8,7 +8,7 @@
     <link rel="icon" href="../assets/icon.png">
     <link rel="stylesheet" href="./style.css">
     <template id="level-plate-template">
-        <li id="temp">
+        <li>
             <div class="level-entry outset unplayed new">
                 <img src="/assets/difficulty-ratings/not-applicable.png" class="difficulty" draggable="false">
                 <div class="text">
@@ -23,32 +23,62 @@
     </template>
 </head>
 <body class="outset">
+    <div id="transition-fade"></div>
+    <div id="level-list-header">
+        <a href="/" class="menu-icon close-popup">
+            <img src="../assets/menu/exit.png" draggable="false">
+        </a>
+        <h1>Browse</h1>
+        <div class="dropdown" data-open="true">
+            <option value="0">Recent</option>
+            <option value="1">Unplayed</option>
+            <option value="2">Most Liked</option>
+            <option value="3">Most Positive</option>
+            <option value="4">Easiest</option>
+            <option value="5">Hardest</option>
+        </div>
+    </div>
     <ul id="level-list" class="inset">
     </ul>
     <div class="selected-level inset hidden">
+        <div class="menu-icon close-popup">
+            <img src="../assets/menu/exit.png" draggable="false">
+        </div>
+        
         <div class="title outset">Lorem Ipsum</div>
-        <div class="split-window">
-            <div class="description outset">
-                <div class="desc">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</div>
-                <div class="inflate"></div>
-                <date class="date-published">May 5, 2021</date>
+        
+        <div class="description outset">
+            <div class="desc">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</div>
+        </div>
+        
+        <div class="stats outset">
+            <a class="author" href="/user/q1jMt4uN83dgh48wN1xgj5rP">arlojay</a>
+            <div class="likes success">5</div>
+            <a href="/play?id=" id="play-current-level" class="button">Play</a>
+            <div class="id">q1jMt4uN83dgh48wN1xgj5rP</div>
+        </div>
+
+        <div class="ratings outset">
+            <div class="thumbs-up"></div>
+            <span class="likes">0</span>
+            <div class="thumbs-down"></div>
+            
+            <div class="difficulty">
+                <img src="/assets/difficulty-ratings/insane.png" draggable="false">
+                <span>Insane</span>
             </div>
-            <div class="stats outset">
-                <a class="author" href="/user/q1jMt4uN83dgh48wN1xgj5rP">arlojay</a>
-                <div class="likes success">5</div>
-                <div class="like-buttons">
-                    <div class="thumbs-up"></div>
-                    <div class="thumbs-down"></div>
-                </div>
-                <div class="difficulty">
-                    <img src="/assets/difficulty-ratings/insane.png" draggable="false">
-                    <span>Insane</span>
-                </div>
-                <button id="play-current-level">Play</button>
-                <div class="inflate"></div>
-                <div class="id">q1jMt4uN83dgh48wN1xgj5rP</div>
+            <div class="difficulty-rating">
+                <img src="/assets/difficulty-ratings/novice.png" draggable="false">
+                <img src="/assets/difficulty-ratings/easy.png" draggable="false">
+                <img src="/assets/difficulty-ratings/normal.png" draggable="false">
+                <img src="/assets/difficulty-ratings/hard.png" draggable="false">
+                <img src="/assets/difficulty-ratings/expert.png" draggable="false">
+                <img src="/assets/difficulty-ratings/insane.png" draggable="false">
+                <img src="/assets/difficulty-ratings/demon.png" draggable="false">
             </div>
         </div>
+        <date class="date-published outset">May 5, 2021</date>
+        <iframe src="/comments?id=null" frameborder="0" class="comments"></iframe>
     </div>
 </body>
 <link rel="preload" as="image" href="/assets/browse/thumbs_down_in.png">

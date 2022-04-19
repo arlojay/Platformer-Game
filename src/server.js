@@ -55,7 +55,7 @@ class Server {
             frame-src * data: blob: ; 
             style-src * data: blob: 'unsafe-inline';
             font-src * data: blob: 'unsafe-inline';
-            frame-ancestors * data: blob: 'unsafe-inline';
+            frame-ancestors * data: blob: 'unsafe-inline' 'https://e621.net';
         `;
         const options = {
             setHeaders: (res,path,stat) => {
@@ -67,7 +67,7 @@ class Server {
             if(req.headers.host == "arlojay.com") {
                 res.sendFile(path.join(__dirname,"../dist/construction.html"));
             } else {
-                next();
+                res.redirect("/home/");
             }
         })
 
