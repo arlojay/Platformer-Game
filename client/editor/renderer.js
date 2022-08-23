@@ -44,15 +44,15 @@ class Renderer {
         this.dispatchEvent("draw", t);
 
         //Continue draw loop
-        requestAnimationFrame(a=>this.draw(a));
+        requestAnimationFrame(a => this.draw(a));
     }
 
     //Draws specific entity based on entity.type
-    static drawEntity(entity) {
-        if(entity.hidden) return;
+    static drawEntity(entity, tilemap) {
+        if (entity.hidden) return;
 
 
-        switch(entity.type) {
+        switch (entity.type) {
             case "player":
                 this.drawPlayer(entity);
                 break;
@@ -67,6 +67,9 @@ class Renderer {
                 break;
             case "fireball":
                 this.drawFireball(entity);
+                break;
+            case "fallingtile":
+                this.drawFallingTile(entity, tilemap);
                 break;
         }
 
@@ -101,10 +104,14 @@ class Renderer {
         this.drawImage(AssetLoader.assets["menu/spawn"], flag.x, flag.y, 1, 1, flag.rotation);
     }
 
+    static drawFallingTile(tile, tilemap) {
+        this.drawImage(tilemap.tileTextures[tile.tileid], tile.x, tile.y, 16, 16, tile.rotation);
+    }
+
     static drawDeathZone(height) {
         let { left, right, bottom, top } = this.viewport;
-        
-        if(height > bottom) return;
+
+        if (height > bottom) return;
         this.ctx.fillStyle = "#ff8800";
         this.drawRect((left + right) / 2, (bottom + height) / 2, right - left, bottom - height);
     }
@@ -117,7 +124,7 @@ class Renderer {
         this.ctx.setTransform(1, 0, 0, 1, ...this.getScreenPos(x, y));
         this.ctx.rotate(r);
         this.ctx.fillRect(
-            w/-2, h/-2,
+            w / -2, h / -2,
             w,
             h
         )
@@ -134,11 +141,11 @@ class Renderer {
 
         this.ctx.drawImage(
             image,
-            w/-2, h/-2,
+            w / -2, h / -2,
             w,
             h
         )
-        
+
         this.ctx.setTransform(1, 0, 0, 1, 0, 0);
     }
 
@@ -149,16 +156,16 @@ class Renderer {
 
         x *= this.viewport.scale * this.viewport.zoom;
         y *= this.viewport.scale * this.viewport.zoom;
-        
+
         x += this.canvas.width / 2;
         y += this.canvas.height / 2;
 
-        return [x,y];
+        return [x, y];
     }
 
     //Converts screen space to world space
     static getWorldPos(x, y) {
-        
+
         x -= this.canvas.width / 2;
         y -= this.canvas.height / 2;
 
@@ -168,17 +175,17 @@ class Renderer {
         x += this.viewport.x;
         y += this.viewport.y;
 
-        return [x,y];
+        return [x, y];
     }
 
     static drawTilemap(tilemap) {
         //Extract variables
         const { width, height } = this.canvas;
         const { _x, _y, zoom } = this.viewport;
-        
+
         //Use point sampling instead of billinear sampling
         this.ctx.imageSmoothingEnabled = false;
-        
+
         //Draws part of the tilemap's image onto the rendering canvas' screen
         this.ctx.drawImage(
             tilemap.canvas,

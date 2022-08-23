@@ -1,0 +1,126 @@
+@import url("/globals.css");
+
+body {
+    width: 100%;
+    height: 100%;
+
+    display: flex;
+    flex-direction: row;
+    color: #fff;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+    padding: 24px;
+    margin: 0px;
+    
+    overflow: hidden;
+
+    user-select: none;
+
+    box-sizing: border-box;
+}
+
+html {
+    width: 100vw;
+    height: 100vh;
+    
+    box-sizing: border-box;
+    cursor: url('/assets/basicCursor.png'), auto;
+    
+    font: 40px "monogram", arial, sans-serif;
+    
+    background: url("/assets/background.png");
+    background-size: 64px 64px;
+    image-rendering: pixelated;
+}
+
+h1, h2, h3, h4 {
+    font-weight: inherit;
+    margin: 0px;
+}
+
+#main {
+    overflow-y: auto;
+}
+
+#user-info {
+    padding: 1em;
+    padding-top: 0px;
+}
+
+#username {
+    margin: 0px;
+    width: 100%;
+    height: 128px;
+
+    background: url("/assets/dithering.png"), linear-gradient(to bottom, #0001 0%, #00000018 50%, #0001 80%, #0000 100%);
+    padding: 0.5em;
+    padding-top: 0.25em;
+
+    box-sizing: border-box;
+}
+#creation-date {
+    color: #aaa;
+    width: 100%;
+}
+#creation-date::before {
+    content: "Created ";
+}
+#id {
+    font-size: 0.75em;
+    color: #666;
+    width: 100%;
+}
+#id::before {
+    content: "Id: ";
+}
+
+.divider {
+    margin-top: 1em;
+}
+.divider + p {
+    margin-top: 0px;
+}
+
+#about-me {
+    color: #aaa;
+    font-size: 0.75em;
+}
+
+#levels {
+    overflow: hidden;
+    padding: 0.25em;
+
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+    grid-auto-rows: 312px;
+    grid-auto-flow: row;
+
+    gap: 0.25em;
+    flex-wrap: wrap;
+
+}
+.level {
+    overflow: hidden;
+    padding: 0.25em;
+}
+.level .name {
+    width: 100%;
+    text-align: center;
+}
+.level .likes {
+    font-size: 0.75em;
+}
+.level .likes::after {
+    content: " Likes";
+}
+.level .upload-date {
+    font-size: 0.75em;
+}
+.level .description {
+    color: #888;
+    margin: 0px;
+    font-size: 0.75em;
+}

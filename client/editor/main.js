@@ -1,7 +1,7 @@
 
 console.log("attach");
 
-with(window) {
+with (window) {
     //Import modules
     const EntityHandler = require("../entityhandler.js");
     const AssetLoader = require("../assetloader.js");
@@ -14,17 +14,19 @@ with(window) {
     const Renderer = require("./renderer.js");
 
     const Editor = require("./editor.js");
-    
+
+    require("../utils.js");
+
     //Modify prototypes
     {
         Math.lerp = function(v1, v2, t) {
             return v1 + (v2 - v1) * t;
         }
-        Number.prototype.mod = function (n) {
+        Number.prototype.mod = function(n) {
             return ((this % n) + n) % n;
         };
     }
-    
+
     player = null;
     spawnflag = null;
     selectedItem = null;
@@ -40,7 +42,7 @@ with(window) {
 
     getIcon = function(id) {
         //Convert string id to numerical id
-        if(typeof id == "string") id = AssetLoader.blocks[id]?.id ?? 0;
+        if (typeof id == "string") id = AssetLoader.blocks[id] ?.id ?? 0;
 
         return tilemap.getTileImage(id);
     }
@@ -48,13 +50,13 @@ with(window) {
     async function start() {
         EntityHandler.loadDefault();
         await AssetLoader.loadDefault();
-        
+
         Renderer.attach(document.querySelector("canvas"));
         Input.listen(document.body);
-        
+
         //Load tilemap
-        tilemap = new Tilemap(256,256);
-        const [ texture, uvs ] = await tilemap.setTexture({
+        tilemap = new Tilemap(256, 256);
+        const [texture, uvs] = await tilemap.setTexture({
             src: "/assets/blocks.png",
         });
 
@@ -67,7 +69,7 @@ with(window) {
         deathZone = spawnflag.y + 10;
 
         Editor.setup();
-        
+
         player.addEventListener("win", () => {
             simulating = false;
             Editor.setTesting(false);
@@ -83,7 +85,7 @@ with(window) {
             player.spawnX = spawnflag.x;
             player.spawnY = spawnflag.y;
             player.spawnInvetedGravity = false;
-            
+
             player.motionX = 0;
             player.motionY = 0;
         })
@@ -94,7 +96,7 @@ with(window) {
 
             //Kill all game entities
             EntityHandler.entities.forEach((el, i) => {
-                if(gameObjectSimulators.includes(el.type)) {
+                if (gameObjectSimulators.includes(el.type)) {
                     EntityHandler.removeEntity(el.id);
                 }
             })
@@ -108,12 +110,19 @@ with(window) {
         })
 
         Editor.addEventListener("save-online", async (data) => {
-            console.log("publish",data);
+            console.log("publish", data);
             const { status, body } = await ServerInterface.publishLevel(data);
 
-            if(status == 500) Editor.submissionError(body);
-                         else Editor.submissionSuccess(body);
+            if (status == 500) Editor.submissionError(body);
+            else Editor.submissionSuccess(body);
         })
+        // Editor.addEventListener("save-locally", async (data) => {
+        //     console.log("save", data);
+        //     const { status, body } = await ServerInterface.publishLevel(data);
+
+        //     if (status == 500) Editor.submissionError(body);
+        //     else Editor.submissionSuccess(body);
+        // })
 
 
         let t0 = 0;
@@ -127,7 +136,7 @@ with(window) {
 
             //Draw all entities
             EntityHandler.entities.forEach((entity, i) => {
-                Renderer.drawEntity(entity);
+                Renderer.drawEntity(entity, tilemap);
             });
 
             Renderer.drawDeathZone(deathZone);
@@ -139,27 +148,32 @@ with(window) {
         })
 
         const tickableBlocks = [];
-        
+
         //Tick blocks in view
         setInterval(() => {
-            if(!simulating) return;
-            for(let x = Renderer.viewport.left; x < Renderer.viewport.right; x++) {
-                for(let y = Renderer.viewport.top; y < Renderer.viewport.bottom; y++) {
+            if (!simulating) return;
+            for (let x = Renderer.viewport.left; x < Renderer.viewport.right; x++) {
+                for (let y = Renderer.viewport.top; y < Renderer.viewport.bottom; y++) {
                     const block = tilemap.blocks[x + y * tilemap.width];
-                    if(!block || block[0] == -1) continue;
+                    if (!block || block[0] == -1) continue;
 
                     const blockobj = AssetLoader.blocks[AssetLoader.getNameForBlock(block[0])];
-                    if(!blockobj) continue;
+                    if (!blockobj) continue;
 
-                    blockobj.tick?.(tilemap.getTile(x,y));
+                    blockobj.tick ?.(tilemap.getTile(x, y));
                 }
             }
-        },1000);
+        }, 1000);
+
+        //Just in case there are some extra asynch functions running
+        setTimeout(() => {
+            Editor.finishSetup();
+        }, 2000)
     }
 
     //Called 100 times a second
     function fixedUpdate() {
-        if(Editor.testing) {
+        if (Editor.testing) {
             Renderer.viewport.x += (player.x - Renderer.viewport.x) / 10;
             Renderer.viewport.y += (player.y - Renderer.viewport.y) / 10;
             Renderer.viewport.zoom += (2 - Renderer.viewport.zoom) / 50;
@@ -172,7 +186,7 @@ with(window) {
         //Tick all entities
         EntityHandler.entities.forEach((entity) => {
             const isGameObject = !entity.simulateInEditor;
-            if(isGameObject && !simulating) return;
+            if (isGameObject && !simulating) return;
             entity.update(tilemap);
         })
     }
@@ -181,6 +195,6 @@ with(window) {
     start().then(() => {
         setInterval(() => {
             fixedUpdate()
-        },1000/100) //Game speed
+        }, 1000 / 100) //Game speed
     });
 }

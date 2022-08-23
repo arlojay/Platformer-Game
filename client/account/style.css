@@ -1,0 +1,170 @@
+@import url("/globals.css");
+
+body {
+    width: 100%;
+    height: 100%;
+
+    display: flex;
+    flex-direction: row;
+    color: #fff;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+    padding: 24px;
+    margin: 0px;
+    
+    overflow: hidden;
+
+    user-select: none;
+
+    box-sizing: border-box;
+}
+
+@keyframes pan {
+    0% {
+        background-position: right -32px bottom -32px;
+    }
+    100% {
+        background-position: right 32px bottom 32px;
+    }
+}
+
+html {
+    width: 100vw;
+    height: 100vh;
+    
+    box-sizing: border-box;
+    cursor: url('/assets/basicCursor.png'), auto;
+    
+    font: 40px "monogram", arial, sans-serif;
+    
+    background: url("/assets/background.png");
+    animation: pan 0.75s linear;
+    animation-iteration-count: infinite;
+    background-size: 64px 64px;
+    image-rendering: pixelated;
+}
+
+h1, h2, h3, h4 {
+    font-weight: inherit;
+}
+
+#tabs {
+    display: grid;
+    grid-template-rows: repeat(3, max-content) auto max-content;
+    gap: 4px;
+}
+
+.tab {
+    font: inherit;
+    color: inherit;
+
+    border: 4px solid #0000;
+    background: none;
+
+    text-align: center;
+}
+.tab[disabled] {
+    color: #888;
+
+    filter: none;
+    backdrop-filter: none;
+
+    pointer-events: none;
+}
+.tab[disabled]:active {
+    border: none;
+}
+
+#main {
+    width: calc(100% - 28px);
+    height: calc(100% - 28px);
+    display: grid;
+    grid-template-rows: 1fr;
+    grid-template-columns: 256px 1fr;
+}
+#content {
+    display: grid;
+    grid-template-rows: 1fr;
+    grid-template-columns: 1fr;
+}
+#content > * {
+    grid-area: 1 / 1 / 2 / 2;
+}
+#content > *[hidden] {
+    visibility: hidden;
+    pointer-events: none;
+}
+
+#login-content, #register-content {
+    display: grid;
+    grid-auto-rows: max-content;
+    justify-items: center;
+}
+#login-form, #register-form {
+    display: grid;
+    grid-auto-rows: max-content;
+    width: 30%;
+    min-width: 300px;
+    gap: 8px;
+}
+#forgot-password {
+    margin-top: 32px;
+    width: 50%;
+    font: inherit;
+    color: inherit;
+    font-size: 0.75em;
+    justify-self: center;
+}
+
+
+/* profile */
+
+#profile-content {
+    display: grid;
+    justify-items: center;
+}
+#profile-content-body {
+    width: 80%;
+    background: #0002;
+    height: 100%;
+
+    padding: 0px 1em;
+    box-sizing: border-box;
+}
+#profile-content h1 {
+    width: 100%;
+    text-align: center;
+}
+button {
+    font: inherit;
+    color: inherit;
+}
+.error {
+    font-size: 0.75em;
+}
+
+
+#profile-content .username {
+    font-size: 1em;
+    color: #ffffffff;
+}
+#profile-content .email {
+    font-size: 1em;
+    color: #ffffffaa;
+}
+#profile-content .creation-date {
+    font-size: 1em;
+    color: #ffffff88;
+}
+#profile-content .id {
+    font-size: 1em;
+    color: #ffffff88;
+}
+
+#about-me {
+    width: 100%;
+    height: 10em;
+}

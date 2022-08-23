@@ -28,6 +28,10 @@ input {
     color: #cbce46;
 }
 
+.flash {
+    animation: jello-vertical 3.6s infinite;
+}
+
 a {
     color: inherit;
     text-decoration: none;
@@ -69,6 +73,7 @@ button,
 .thumbs-up,
 .thumbs-down,
 input[type="button"],
+input[type="submit"],
 .close-popup,
 .dropdown .selected,
 .dropdown .options .dropdown-option,
@@ -78,6 +83,8 @@ input[type="button"],
 }
 
 input[type="text"],
+input[type="password"],
+input[type="email"],
 .textcursor
 textarea {
     cursor: url('/assets/textCursor.png'), auto !important;
@@ -88,6 +95,7 @@ textarea {
 }
 .outset,
 input[type="button"],
+input[type="submit"],
 .button,
 button,
 ::-webkit-scrollbar-thumb,
@@ -108,8 +116,12 @@ button,
 
 .inset,
 input[type="button"]:active,
+input[type="submit"]:active,
 .button:active,
 button:active,
+input[type="text"],
+input[type="password"],
+input[type="email"],
 ::-webkit-scrollbar-track
 {
     border: 4px solid transparent;
@@ -118,6 +130,15 @@ button:active,
     border-right-color: #48565E;
     border-bottom-color: #48565E;
     background: radial-gradient(farthest-corner at 0px 0px, #1F313B 0%, #253B47 100%);
+}
+
+input[type="text"][disabled],
+input[type="password"][disabled],
+input[type="email"][disabled],
+input[type="submit"][disabled],
+button[disabled] {
+    backdrop-filter: grayscale(1);
+    filter: grayscale(1);
 }
 
 a.button {
@@ -139,17 +160,21 @@ a.button {
 }
 
 .popup {
-    min-width: 150px;
-    min-height: 75px;
+    color: #fff;
+    
+    min-width: 300px;
+    min-height: 4em;
     max-width: 50vw;
     width: fit-content;
     height: fit-content;
-    padding: 0.5rem;
+    
     box-sizing: border-box;
     pointer-events: all;
-    display: flex;
-    flex-direction: column;
-    color: #fff;
+
+    display: grid;
+    grid-auto-rows: max-content;
+    padding: 0.5em;
+    gap: 0.5em;
 }
 @keyframes open-popup {
     0% {
@@ -286,4 +311,67 @@ a.button {
 }
 .underlined {
     text-decoration: underline;
+}
+
+
+/* Animations */
+@keyframes jello-vertical {
+    0% {transform: scale3d(1, 1, 1);}
+    7.5% {transform: scale3d(0.75, 1.25, 1);}
+    10% {transform: scale3d(1.25, 0.75, 1);}
+    12.5% {transform: scale3d(0.85, 1.15, 1);}
+    16.25% {transform: scale3d(1.05, 0.95, 1);}
+    18.75% {transform: scale3d(0.95, 1.05, 1);}
+    25% {transform: scale3d(1, 1, 1);}
+}
+
+input:-webkit-autofill,
+input:-webkit-autofill:focus {
+    transition: background-color 600000s 0s, color 600000s 0s;
+    font: inherit !important;
+}
+input[data-autocompleted] {
+    background-color: transparent !important;
+    font: inherit !important;
+}
+
+#install-desktop-app {
+    background: #8a2828;
+    border: 2px solid #7c1d1d;
+    border-radius: 4px;
+
+    font: 16px Arial, sans-serif;
+    color: #e19494;
+    
+    position: fixed;
+    bottom: 4px;
+    right: 4px;
+
+    z-index: 100;
+    
+    box-sizing: border-box;
+}
+#install-desktop-app h2 {
+    font-weight: normal;
+    font-size: 1.5em;
+
+    margin: 0.25em;
+}
+#install-desktop-app button {
+    background: transparent;
+    border: inherit;
+    border-radius: 4px;
+
+    font: inherit;
+    
+    color: inherit;
+    margin: 0.25em;
+    padding: 2px;
+
+    width: calc(100% - 8px);
+
+    box-sizing: border-box;
+}
+#install-desktop-app button:active {
+    background: #0002;
 }

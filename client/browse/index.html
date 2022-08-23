@@ -7,6 +7,11 @@
     <title>Platformer Game Indev - Browse</title>
     <link rel="icon" href="../assets/icon.png">
     <link rel="stylesheet" href="./style.css">
+    <link rel="manifest" href="/manifest.webmanifest">
+    <script src="./bundle.js" defer></script>
+    
+</head>
+<body class="outset">
     <template id="level-plate-template">
         <li>
             <div class="level-entry outset unplayed new">
@@ -21,8 +26,7 @@
             </div>
         </li>
     </template>
-</head>
-<body class="outset">
+    
     <div id="transition-fade"></div>
     <div id="level-list-header">
         <a href="/" class="menu-icon close-popup">
@@ -85,5 +89,4 @@
 <link rel="preload" as="image" href="/assets/browse/thumbs_down_out.png">
 <link rel="preload" as="image" href="/assets/browse/thumbs_up_in.png">
 <link rel="preload" as="image" href="/assets/browse/thumbs_up_out.png">
-<script src="./bundle.js"></script>
 </html>

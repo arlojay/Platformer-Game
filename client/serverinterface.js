@@ -10,19 +10,19 @@ class ServerInterface {
         let resBody = await res.text();
         try {
             resBody = JSON.parse(resBody);
-        } catch(e) {}
+        } catch (e) { }
 
         const { status } = res;
         return { body: resBody, status };
     }
     static async get(url, query) {
         let q = [];
-        for(let key of Object.keys(query)) {
+        for (let key of Object.keys(query)) {
             q.push(`${key}=${query[key]}`);
         }
-        
-        if(query) url += "?"+q.join("&");
-        
+
+        if (query) url += "?" + q.join("&");
+
         let res = await fetch(url, {
             method: "get"
         });
@@ -30,7 +30,7 @@ class ServerInterface {
         let resBody = await res.text();
         try {
             resBody = JSON.parse(resBody);
-        } catch(e) {}
+        } catch (e) { }
 
         const { status } = res;
         return { body: resBody, status };

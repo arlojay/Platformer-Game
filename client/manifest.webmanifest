@@ -1,0 +1,15 @@
+{
+    "background_color": "red",
+    "description": "Desktop version of OnlinePlatformer",
+    "display": "fullscreen",
+    "icons": [
+        {
+            "src": "assets/icon.png",
+            "sizes": "64x64",
+            "type": "image/png"
+        }
+    ],
+    "name": "OnlinePlatformer desktop app",
+    "short_name": "OnlinePlatformer",
+    "start_url": "/home/index.html"
+}

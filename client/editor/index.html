@@ -6,6 +6,8 @@
     <title>Platformer Game Indev - Editor</title>
     <link rel="icon" href="../assets/icon.png">
     <link href="style.css" rel="stylesheet" type="text/css" />
+    <script src="bundle.js" defer></script>
+    
 </head>
 <body>
     <canvas>
@@ -68,6 +70,8 @@
             <div class="inset" id="editor-blocks">
             </div>
         </div>
+
+        
         <div class="center-center-align">
             <div class="popup outset hidden" id="save-popup">
                 <div class="title-bar">
@@ -75,17 +79,27 @@
                         <img src="../assets/menu/exit.png" draggable="false">
                     </div>
                     <h1>Publish a New Level</h1>
-                    <div class="menu-icon close-popup"></div>
                 </div>
                 <h2 id="submission-message" class="success">&nbsp;</h2>
                 <form>
                     <input type="text" class="level-name inset" placeholder="Name" autocomplete="off" spellcheck="false">
-                    <textarea class="level-desc inset" placeholder="Description" spellcheck="false"></textarea>
+                    <textarea class="level-desc inset" placeholder="Description" spellcheck="false" rows="6"></textarea>
                 </form>
                 <div class="popup-options">
-                    <input type="button" value="Publish">
-                    <input type="button" value="Save locally">
+                    <input type="submit" id="publish-online" value="Publish">
+                    <input type="submit" id="publish-locally" value="Save locally">
                 </div>
+            </div>
+        </div>
+        
+        <div class="center-center-align" id="loading-editor-bg">
+            <div class="popup outset" id="loading-editor-popup">
+                <div class="title-bar">
+                    <div></div>
+                    <h1>Loading editor</h1>
+                </div>
+                <img src="/assets/loading1.gif" alt="Loading Spinner">
+                <h2>Please wait</h2>
             </div>
         </div>
         
@@ -96,10 +110,8 @@
                         <img src="../assets/menu/exit.png" draggable="false">
                     </div>
                     <h1>Success</h1>
-                    <div class="menu-icon close-popup"></div>
                 </div>
                 <h2 class="level-id" class="info">Level ID: undefined</h2>
-                <class class="growing-space"></class>
                 <div class="popup-options">
                     <input type="button" value="View Page">
                     <input type="button" value="Close">
@@ -108,6 +120,4 @@
         </div>
     </div>
 </body>
-
-<script src="bundle.js"></script>
 </html>

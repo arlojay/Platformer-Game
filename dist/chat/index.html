@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Platformer Game Indev - Chat</title>
+    <link rel="icon" href="../assets/icon.png">
+    <link rel="stylesheet" href="style.css">
+    <script src="bundle.js" defer></script>
+</head>
+<body>
+    <template id="message-template">
+        <div class="message outset">
+            <a class="author"></a>
+            <div class="content" data-expanded="false"></div>
+            <time></time>
+            </div>
+        </div>
+    </template>
+    <template id="online-user-template">
+        <div>
+            <a class="name"></a>
+            <span class="count"></span>
+        </div>
+    </template>
+    <div id="main" class="outset">
+        <div id="logs">
+            
+        </div>
+        <div id="online" class="inset">
+            <h1>Users Online</h1>
+        </div>
+        <form id="input">
+            <input type="text" placeholder="Send a message" id="input-text" maxlength="2000">
+            <input type="submit" value="Send" id="">
+        </form>
+    </div>
+</body>
+</html>

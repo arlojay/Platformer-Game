@@ -1,5 +1,6 @@
 class AssetLoader {
     static blocks = {};
+    static tileImages = {};
     static assets = {};
 
     static loadBlocks(...names) {
@@ -9,26 +10,30 @@ class AssetLoader {
         })
     }
 
+    static loadTileImages(tilemap) {
+        tilemap.texture
+    }
+
     static getIdForBlock(name) {
-        if(typeof name != "string") return name;
+        if (typeof name != "string") return name;
 
         let block = this.blocks[name];
-        return block?.id ?? null;
+        return block ?.id ?? null;
     }
 
     static getNameForBlock(id) {
-        if(typeof id == "string") return id;
+        if (typeof id == "string") return id;
 
-        for(let name of Object.keys(this.blocks)) {
-            if(this.blocks[name].id == id) return name;
+        for (let name of Object.keys(this.blocks)) {
+            if (this.blocks[name].id == id) return name;
         }
     }
 
     static async loadAssets(...names) {
         let promises = [];
-        
-        for(let name of names) {
-            promises.push(new Promise((res,rej) => {
+
+        for (let name of names) {
+            promises.push(new Promise((res, rej) => {
                 let img = new Image();
                 img.onload = () => {
                     this.assets[name] = img;
@@ -38,7 +43,7 @@ class AssetLoader {
             }));
         }
 
-        for(let promise of promises) {
+        for (let promise of promises) {
             await promise;
         }
     }
@@ -46,11 +51,11 @@ class AssetLoader {
     static async loadDefault() {
 
         this.loadBlocks(
-            "brick","spike","flag","chain","metal","water",
-            "invisible","bouncepad","jumporb","grate","roundspike",
-            "spawnpoint","lava","forcefield","wood","gravityorb",
-            "levetatingblock","sludge","flagblock","spawnpointblock",
-            "technochain","technometal","blue","lock","fireballshooter",
+            "brick", "spike", "flag", "chain", "metal", "water",
+            "invisible", "bouncepad", "jumporb", "grate", "roundspike",
+            "spawnpoint", "lava", "forcefield", "wood", "gravityorb",
+            "levetatingblock", "sludge", "flagblock", "spawnpointblock",
+            "technochain", "technometal", "blue", "lock", "fireballshooter",
 
             "icon-experimental"
         );

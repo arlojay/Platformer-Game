@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Platformer Game Indev - Account Portal</title>
+    <link rel="icon" href="../assets/icon.png">
+    <link rel="stylesheet" href="style.css">
+    <link rel="manifest" href="/manifest.webmanifest">
+    <script src="bundle.js" defer></script>
+</head>
+<body>
+    <div id="main" class="outset">
+        <div id="tabs">
+            <button class="tab" id="login-tab">Login</button>
+            <button class="tab" id="register-tab">Register</button>
+            <button class="tab" id="profile-tab" disabled>Profile</button>
+            <div class="inflator"></div>
+            <a href="/" class="tab" id="back-button">Back</a>
+        </div>
+        <div id="content" class="inset">
+            <div id="login-content" hidden>
+                <h1>Login</h1>
+                <form id="login-form">
+                    <span class="error username"></span>
+                    <input type="text" placeholder="Username" class="username">
+
+                    <span class="error password"></span>
+                    <input type="password" placeholder="Password" class="password">
+
+                    <br>
+                    <input type="submit" value="Login">
+                    <!--                     
+                        haha nope
+                        <button id="forgot-password">Forgot password</button>
+                    -->
+                </form>
+            </div>
+            <div id="register-content" hidden>
+                <h1>Register</h1>
+                <form id="register-form">
+                    <span class="error username"></span>
+                    <input type="text" placeholder="Username" class="username">
+                    
+                    <span class="error password"></span>
+                    <input type="password" placeholder="Password" class="password">
+                    
+                    <span class="error password-confirm"></span>
+                    <input type="password" placeholder="Confirm Password" class="password-confirm">
+                    
+                    <span class="error email"></span>
+                    <input type="email" placeholder="Email" class="email">
+
+                    <br>
+                    <input type="submit" value="Create account">
+                </form>
+            </div>
+            <div id="profile-content" hidden>
+                <div id="profile-content-body">
+                    <h1>Profile</h1>
+                    <div class="username"></div>
+                    <div class="email"></div>
+                    <br>
+                    
+                    <span>About me</span>
+                    <iframe id="about-me" src="/markdowntext/" frameborder="0"></iframe>
+                    <br>
+                    
+                    <time class="creation-date"></time>
+                    <div class="id"></div>
+                    <button id="log-out">Log out</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

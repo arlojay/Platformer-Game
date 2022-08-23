@@ -3,6 +3,7 @@ console.log("attach");
 const Listener = require("../listeners.js");
 const Input = require("../input.js");
 const AssetLoader = require("../assetloader.js");
+const cookies = require("js-cookie");
 
 class EditorUI {
     static blockCategories = [
@@ -71,34 +72,34 @@ class EditorUI {
 
     static openCategory(index) {
         let category = this.blockCategories[index];
-        if(!category) return;
+        if (!category) return;
 
         this.selectedCategory = index;
 
         //Hide all block categories except selected one
         const blockContainers = document.querySelector("#editor-blocks").children;
         [...blockContainers].forEach((child) => {
-            if(child.getAttribute("id") == "category-"+index+"-blocks") {
+            if (child.getAttribute("id") == "category-" + index + "-blocks") {
                 child.style.visibility = "visible";
             } else {
                 child.style.visibility = "hidden";
             }
         })
 
-        this.dispatchEvent("opencategory",this.selectedCategory);
+        this.dispatchEvent("opencategory", this.selectedCategory);
     }
-    
+
     static selectBlock(name) {
         let block = AssetLoader.blocks[name];
-        if(!block) return;
+        if (!block) return;
 
         const clickedElement = document.querySelector(`#category-${this.selectedCategory}-block-${name}`);
-        
+
         document.querySelector("#editor-selected-block > div > img").src = clickedElement.querySelector("img").src;
 
         this.selectedBlock = block.id;
         this.selectedBlockName = name;
-        this.dispatchEvent("selectblock",name,block.id);
+        this.dispatchEvent("selectblock", name, block.id);
     }
 
     static showHint(text) {
@@ -126,7 +127,7 @@ class EditorUI {
         document.querySelector("#spawn").addEventListener("click", () => {
             this.dispatchEvent("spawn");
         })
-        
+
         document.querySelector("#save").addEventListener("click", () => {
             this.dispatchEvent("save");
         })
@@ -148,17 +149,27 @@ class EditorUI {
         })
 
         Input.addEventListener("keydown", (key) => {
-            if(key == "r") {
-                if(Input.keysPressed.includes("shift")) this.rotation = (this.rotation - 1).mod(4);
+            if (key == "r") {
+                if (Input.keysPressed.includes("shift")) this.rotation = (this.rotation - 1).mod(4);
                 else this.rotation = (this.rotation + 1).mod(4);
 
                 this.dispatchEvent("rotate", this.rotation);
             }
         })
+
+        if (cookies.get("token") == null) {
+            document.querySelector("#publish-online").disabled = true;
+        }
+    }
+
+    static hideLoadingPrompt() {
+        const promptBg = document.querySelector("#loading-editor-bg");
+
+        promptBg.classList.add("hidden");
     }
 
     static loadCategories() {
-        for(let i in this.blockCategories) {
+        for (let i in this.blockCategories) {
             const category = this.blockCategories[i];
 
             const { icon, name, blocks } = category;
@@ -168,8 +179,8 @@ class EditorUI {
             const imageIcon = document.createElement("img");
 
             categoryElement.classList.add("menu-icon");
-            categoryElement.setAttribute("id","category-" + i);
-            
+            categoryElement.setAttribute("id", "category-" + i);
+
             const id = AssetLoader.getIdForBlock(icon);
             imageIcon.src = id != null ? tilemap.getTileImage(id) : `/assets/${icon}.png`;
             imageIcon.draggable = false;
@@ -186,23 +197,20 @@ class EditorUI {
             })
 
             const blockGroupElement = document.createElement("div");
-            blockGroupElement.setAttribute("id","category-"+i+"-blocks");
+            blockGroupElement.setAttribute("id", "category-" + i + "-blocks");
 
-            //Overlap elements procedurally because css is stupid
-            if(i != 0) blockGroupElement.style.marginTop = `-19px`
-            
 
-            for(let block of blocks) {
+            for (let block of blocks) {
 
                 //Setup block button
                 const blockElement = document.createElement("div");
                 const blockImageIcon = document.createElement("img");
 
                 blockElement.classList.add("menu-icon");
-                blockElement.setAttribute("id","category-"+i+"-block-"+block);
+                blockElement.setAttribute("id", "category-" + i + "-block-" + block);
                 blockImageIcon.src = tilemap.getTileImage(AssetLoader.getIdForBlock(block));
                 blockImageIcon.draggable = false;
-                
+
                 blockElement.appendChild(blockImageIcon);
                 blockGroupElement.appendChild(blockElement);
 
@@ -233,7 +241,7 @@ class EditorUI {
             element.classList.add("hidden");
         });
 
-        element.querySelector("form")?.addEventListener("submit", (e) => {
+        element.querySelector("form") ?.addEventListener("submit", (e) => {
             e.preventDefault();
         });
         let options = element.querySelectorAll(".popup-options > input");
@@ -242,15 +250,15 @@ class EditorUI {
     }
 
     static openPublishLevelScreen() {
-        if(this.inPopup) return;
-        
+        if (this.inPopup) return;
+
         const element = document.querySelector("#save-popup");
         const options = this.openPopup(element);
 
         options[0].onclick = () => {
             const name = element.querySelector(".level-name").value;
             const desc = element.querySelector(".level-desc").value;
-            
+
             options[0].disabled = true;
             setTimeout(() => {
                 this.dispatchEvent("click-save-online", name, desc);
@@ -260,7 +268,7 @@ class EditorUI {
         options[1].onclick = () => {
             const name = element.querySelector(".level-name").value;
             const desc = element.querySelector(".level-desc").value;
-            
+
             options[1].disabled = true;
             setTimeout(() => {
                 this.dispatchEvent("click-save-locally", name, desc);
@@ -272,8 +280,8 @@ class EditorUI {
     static submissionSuccess(body) {
         let el = document.querySelector("#submission-message");
         el.textContent = "Level successfully submitted";
-        el.setAttribute("class","success");
-        
+        el.setAttribute("class", "success");
+
         const element = document.querySelector("#save-online-success-popup");
         const options = this.openPopup(element);
 
@@ -289,7 +297,7 @@ class EditorUI {
     static submissionError(body) {
         let el = document.querySelector("#submission-message");
         el.textContent = body;
-        el.setAttribute("class","error");
+        el.setAttribute("class", "error");
     }
 }
 

@@ -81,6 +81,7 @@ h1 {
 }
 #welcome-modal {
     width: 33vw;
+    min-width: 512px;
 }
 #welcome-modal > h2 {
     font-size: 1em;
@@ -167,6 +168,10 @@ h1 {
 }
 #patch-notes[data-open="false"] .opened-menu {
     animation: close-menu 0.25s ease-out 1;
+    animation-fill-mode: forwards;
+}
+#patch-notes[data-open="false_loading"] .opened-menu {
+    animation: close-menu 0s ease-out 1;
     animation-fill-mode: forwards;
 }
 #patch-notes section {

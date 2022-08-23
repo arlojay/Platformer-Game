@@ -17,25 +17,36 @@ module.exports = {
                 { from: "client/comments/style.css", to: "comments/style.css" },
                 { from: "client/markdowntext/index.html", to: "markdowntext/index.html" },
                 { from: "client/markdowntext/style.css", to: "markdowntext/style.css" },
+                { from: "client/account/index.html", to: "account/index.html" },
+                { from: "client/account/style.css", to: "account/style.css" },
+                { from: "client/chat/index.html", to: "chat/index.html" },
+                { from: "client/chat/style.css", to: "chat/style.css" },
+                { from: "client/user/index.html", to: "user/index.html" },
+                { from: "client/user/style.css", to: "user/style.css" },
                 { from: "client/globals.css", to: "globals.css" },
+                { from: "client/manifest.webmanifest", to: "manifest.webmanifest" },
+                { from: "client/serviceworker.js", to: "serviceworker.js" }
             ],
         })
     ],
-	entry: {
+    entry: {
         "browse/bundle": path.resolve(__dirname, "client/browse/main.js"),
         "editor/bundle": path.resolve(__dirname, "client/editor/main.js"),
         "play/bundle": path.resolve(__dirname, "client/play/main.js"),
         "home/bundle": path.resolve(__dirname, "client/home/main.js"),
         "comments/bundle": path.resolve(__dirname, "client/comments/main.js"),
         "markdowntext/bundle": path.resolve(__dirname, "client/markdowntext/main.js"),
+        "account/bundle": path.resolve(__dirname, "client/account/main.js"),
+        "chat/bundle": path.resolve(__dirname, "client/chat/main.js"),
+        "user/bundle": path.resolve(__dirname, "client/user/main.js")
     },
-	output: {
-		path: path.resolve(__dirname, "dist"),
-		filename: "[name].js"
-	},
-	target: "web",
-	mode: "production",
-	experiments: {
-		topLevelAwait: true,
-	},
+    output: {
+        path: path.resolve(__dirname, "dist"),
+        filename: "[name].js"
+    },
+    target: "web",
+    mode: "production",
+    experiments: {
+        topLevelAwait: true,
+    },
 };
